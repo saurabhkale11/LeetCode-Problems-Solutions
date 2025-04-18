@@ -1,39 +1,29 @@
-class TreeNode {
-    int val;
-    TreeNode left;
-    TreeNode right;
-    TreeNode() {}
-    TreeNode(int val) { this.val = val; }
-    TreeNode(int val, TreeNode left, TreeNode right) {
-        this.val = val;
-        this.left = left;
-        this.right = right;
-    }
-}
-
 class Solution {
-    private int maxLength = 0;
-
+    int maxZigZag = 0;
+    
     public int longestZigZag(TreeNode root) {
-        // Start the DFS from root with both directions
-        dfs(root, 0, true); // Start with left direction
-        dfs(root, 0, false); // Start with right direction
-        return maxLength;
+        if (root == null) return 0;
+        
+        // Start the DFS with two directions: left and right
+        dfs(root, 0, true); // True means start by moving left
+        dfs(root, 0, false); // False means start by moving right
+        
+        return maxZigZag;
     }
-
+    
     private void dfs(TreeNode node, int length, boolean isLeft) {
         if (node == null) return;
         
-        // Update the global maximum ZigZag length
-        maxLength = Math.max(maxLength, length);
+        // Update the result with the maximum ZigZag length
+        maxZigZag = Math.max(maxZigZag, length);
         
-        // If moving left, the next move should be right, so recurse to the right child
+        // If we are going left, next we must go right
         if (isLeft) {
-            dfs(node.left, length + 1, false);  // Move left and next move should be right
-            dfs(node.right, 1, true);           // Start a new path by moving right from this node
+            dfs(node.left, length + 1, false); // Move left -> right
+            dfs(node.right, 1, true); // Start new ZigZag from right -> left
         } else {
-            dfs(node.right, length + 1, true);  // Move right and next move should be left
-            dfs(node.left, 1, false);           // Start a new path by moving left from this node
+            dfs(node.right, length + 1, true); // Move right -> left
+            dfs(node.left, 1, false); // Start new ZigZag from left -> right
         }
     }
 }
