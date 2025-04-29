@@ -1,23 +1,19 @@
 public class Solution {
     public String addSpaces(String s, int[] spaces) {
-        // Create a StringBuilder to store the result
         StringBuilder result = new StringBuilder();
-        
-        // Keep track of the last index we processed in the string
         int spaceIndex = 0;
-        int spaceCount = spaces.length;
+        int n = s.length();
         
-        // Loop through the string and insert spaces at the appropriate positions
-        for (int i = 0; i < s.length(); i++) {
-            // If we need to add a space before this character, add it
-            if (spaceIndex < spaceCount && i == spaces[spaceIndex]) {
-                result.append(" ");
-                spaceIndex++;
+        // Iterate through the string
+        for (int i = 0; i < n; i++) {
+            // Check if the current index matches any space index
+            while (spaceIndex < spaces.length && i == spaces[spaceIndex]) {
+                result.append(' ');  // Add a space before the character
+                spaceIndex++;  // Move to the next space index
             }
-            // Append the current character to the result
-            result.append(s.charAt(i));
+            result.append(s.charAt(i));  // Add the current character
         }
         
-        return result.toString();
+        return result.toString();  // Convert StringBuilder to string and return
     }
 }
