@@ -1,27 +1,20 @@
 import java.util.HashSet;
-import java.util.Set;
 
 public class Solution {
     public boolean checkIfExist(int[] arr) {
-        Set<Integer> seen = new HashSet<>();
+        HashSet<Integer> seen = new HashSet<>();
         
+        // Iterate through each element in the array
         for (int num : arr) {
+            // Check if num * 2 or num / 2 (when num is even) exists in the set
             if (seen.contains(num * 2) || (num % 2 == 0 && seen.contains(num / 2))) {
                 return true;
             }
+            // Add the current number to the set
             seen.add(num);
         }
         
+        // Return false if no valid pair is found
         return false;
-    }
-
-    public static void main(String[] args) {
-        Solution sol = new Solution();
-        
-        int[] arr1 = {10, 2, 5, 3};
-        System.out.println(sol.checkIfExist(arr1)); // Expected: true
-        
-        int[] arr2 = {3, 1, 7, 11};
-        System.out.println(sol.checkIfExist(arr2)); // Expected: false
     }
 }
