@@ -1,36 +1,40 @@
 public class Solution {
     public int minimumSize(int[] nums, int maxOperations) {
-        int left = 1, right = 0;
+        int low = 1;
+        int high = 0;
         
-        // Find the maximum number of balls in any bag
+        // Find the maximum size of any bag
         for (int num : nums) {
-            right = Math.max(right, num);
+            high = Math.max(high, num);
         }
-
-        // Binary search to find the minimum maximum bag size
-        while (left < right) {
-            int mid = left + (right - left) / 2;
-            if (isPossible(nums, mid, maxOperations)) {
-                right = mid; // Try to minimize the maximum bag size
+        
+        // Binary search on the maximum size of a bag after operations
+        while (low < high) {
+            int mid = low + (high - low) / 2;
+            if (canDivide(nums, mid, maxOperations)) {
+                high = mid;  // Try for a smaller max size
             } else {
-                left = mid + 1; // Increase the bag size
+                low = mid + 1;  // Increase the max size
             }
         }
-
-        return left;
+        
+        return low;  // The smallest max size that works
     }
-
-    private boolean isPossible(int[] nums, int maxBagSize, int maxOperations) {
+    
+    // Helper function to check if it's possible to make all bags <= maxSize with maxOperations
+    private boolean canDivide(int[] nums, int maxSize, int maxOperations) {
         int operations = 0;
         
-        // For each bag, calculate how many splits are needed to make each sub-bag <= maxBagSize
+        // For each bag, calculate the number of splits needed
         for (int num : nums) {
-            if (num > maxBagSize) {
-                operations += (num - 1) / maxBagSize; // (num - 1) / maxBagSize gives the number of splits
+            if (num > maxSize) {
+                operations += (num - 1) / maxSize;  // Number of splits required for this bag
+            }
+            if (operations > maxOperations) {
+                return false;  // If we exceed max operations, return false
             }
         }
-
-        // If we need more operations than allowed, return false
-        return operations <= maxOperations;
+        
+        return true;
     }
 }
