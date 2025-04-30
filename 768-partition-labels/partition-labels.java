@@ -1,16 +1,29 @@
+import java.util.*;
+
 class Solution {
     public List<Integer> partitionLabels(String s) {
-        int[] last = new int[26];
-        for (int i = 0; i < s.length(); i++) last[s.charAt(i) - 'a'] = i;
-        List<Integer> res = new ArrayList<>();
-        int start = 0, end = 0;
+        // Step 1: Record the last occurrence of each character
+        int[] lastOccurrence = new int[26]; // Since there are 26 lowercase English letters
         for (int i = 0; i < s.length(); i++) {
-            end = Math.max(end, last[s.charAt(i) - 'a']);
+            lastOccurrence[s.charAt(i) - 'a'] = i;
+        }
+        
+        List<Integer> result = new ArrayList<>();
+        int start = 0; // Start index of the current partition
+        int end = 0;   // End index of the current partition
+        
+        // Step 2: Iterate through the string and form partitions
+        for (int i = 0; i < s.length(); i++) {
+            // Update the farthest last occurrence
+            end = Math.max(end, lastOccurrence[s.charAt(i) - 'a']);
+            
+            // If we reach the end of a partition
             if (i == end) {
-                res.add(end - start + 1);
-                start = i + 1;
+                result.add(i - start + 1); // Add the size of the partition
+                start = i + 1; // Start a new partition
             }
         }
-        return res;
+        
+        return result;
     }
 }
