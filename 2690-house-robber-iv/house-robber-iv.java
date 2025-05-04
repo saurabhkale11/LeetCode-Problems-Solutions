@@ -1,35 +1,32 @@
 public class Solution {
     public int minCapability(int[] nums, int k) {
-        int left = 1, right = (int)1e9;
-        int result = right;
-
-        while (left <= right) {
-            int mid = left + (right - left) / 2;
-
-            if (canRob(nums, k, mid)) {
-                result = mid;
-                right = mid - 1;
+        int low = 1, high = Integer.MAX_VALUE;
+        
+        while (low < high) {
+            int mid = low + (high - low) / 2;
+            if (canRob(nums, mid, k)) {
+                high = mid;
             } else {
-                left = mid + 1;
+                low = mid + 1;
             }
         }
-
-        return result;
+        
+        return low;
     }
 
-    private boolean canRob(int[] nums, int k, int maxCap) {
+    private boolean canRob(int[] nums, int capability, int k) {
         int count = 0;
         int i = 0;
-
+        
         while (i < nums.length) {
-            if (nums[i] <= maxCap) {
+            if (nums[i] <= capability) {
                 count++;
-                i += 2; // skip adjacent house
+                i += 2;  // Skip the next house to avoid adjacent robbery
             } else {
                 i++;
             }
         }
-
+        
         return count >= k;
     }
 }
