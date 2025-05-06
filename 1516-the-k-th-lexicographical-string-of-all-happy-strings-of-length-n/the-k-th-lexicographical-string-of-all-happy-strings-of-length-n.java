@@ -1,27 +1,24 @@
-import java.util.ArrayList;
-import java.util.List;
-
-public class Solution {
+class Solution {
+    int count = 0;
+    String result = "";
+    
     public String getHappyString(int n, int k) {
-        List<String> happyStrings = new ArrayList<>();
-        generateHappyStrings("", n, happyStrings);
-        
-        if (k > happyStrings.size()) {
-            return "";
-        }
-        
-        return happyStrings.get(k - 1);
+        dfs(n, k, "", ' ');
+        return result;
     }
-
-    private void generateHappyStrings(String current, int n, List<String> happyStrings) {
+    
+    private void dfs(int n, int k, String current, char lastChar) {
         if (current.length() == n) {
-            happyStrings.add(current);
+            count++;
+            if (count == k) {
+                result = current;
+            }
             return;
         }
-        
-        for (char c = 'a'; c <= 'c'; c++) {
-            if (current.isEmpty() || current.charAt(current.length() - 1) != c) {
-                generateHappyStrings(current + c, n, happyStrings);
+
+        for (char ch : new char[]{'a', 'b', 'c'}) {
+            if (ch != lastChar && count < k) {
+                dfs(n, k, current + ch, ch);
             }
         }
     }
